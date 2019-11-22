@@ -1,0 +1,656 @@
+NOTE: Copyright (c) 2016 by SAS Institute Inc., Cary, NC, USA.
+NOTE: SAS (r) Proprietary Software 9.4 (TS1M5)
+      Licensed to TEXAS A&M UNIVERSITY - SFA T&R, Site 70080787.
+NOTE: This session is executing on the X64_10PRO  platform.
+
+
+
+NOTE: Updated analytical products:
+
+      SAS/STAT 14.3
+      SAS/ETS 14.3
+      SAS/OR 14.3
+      SAS/IML 14.3
+      SAS/QC 14.3
+
+NOTE: Additional host information:
+
+ X64_10PRO WIN 10.0.18362  Workstation
+
+NOTE: SAS initialization used:
+      real time           3.53 seconds
+      cpu time            2.48 seconds
+
+1    proc contents data=project.enroll;
+NOTE: Writing HTML Body file: sashtml.htm
+ERROR: Libref PROJECT is not assigned.
+2    run;
+
+NOTE: Statements not processed because of errors noted above.
+NOTE: PROCEDURE CONTENTS used (Total process time):
+      real time           4.43 seconds
+      cpu time            1.23 seconds
+
+NOTE: The SAS System stopped processing this step because of errors.
+
+NOTE: Import Cancelled.
+NOTE: Import Cancelled.
+3    data ca_income;
+4    set work.check;
+ERROR: File WORK.CHECK.DATA does not exist.
+5    run;
+
+NOTE: The SAS System stopped processing this step because of errors.
+WARNING: The data set WORK.CA_INCOME may be incomplete.  When this step was stopped there were 0 observations and 0 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.41 seconds
+      cpu time            0.09 seconds
+
+
+6    data work.check;
+7    set ca_income;
+8    run;
+
+NOTE: There were 0 observations read from the data set WORK.CA_INCOME.
+NOTE: The data set WORK.CHECK has 0 observations and 0 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.16 seconds
+      cpu time            0.03 seconds
+
+
+9    data work.check;
+10   set project.ca_income;
+11   run;
+
+NOTE: There were 2784 observations read from the data set PROJECT.CA_INCOME.
+NOTE: The data set WORK.CHECK has 2784 observations and 5 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.12 seconds
+      cpu time            0.01 seconds
+
+
+12   data work.ca_inc_pop;
+13   set project.ca_income;
+14   run;
+
+NOTE: There were 2784 observations read from the data set PROJECT.CA_INCOME.
+NOTE: The data set WORK.CA_INC_POP has 2784 observations and 5 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+
+
+15   data work.ca_inc_pop;
+16   set project.ca_income;
+17   output;
+18   run;
+
+NOTE: There were 2784 observations read from the data set PROJECT.CA_INCOME.
+NOTE: The data set WORK.CA_INC_POP has 2784 observations and 5 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+
+
+19   data work.ca_inc_pop;
+20   set project.ca_income
+21       project.ca_population;
+22   run;
+
+NOTE: There were 2784 observations read from the data set PROJECT.CA_INCOME.
+NOTE: There were 2784 observations read from the data set PROJECT.CA_POPULATION.
+NOTE: The data set WORK.CA_INC_POP has 5568 observations and 6 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.05 seconds
+      cpu time            0.00 seconds
+
+
+23   data work.ca_inc_pop;
+24   merge project.ca_income project.ca_population;
+25   by county year;
+26   run;
+
+NOTE: There were 2784 observations read from the data set PROJECT.CA_INCOME.
+NOTE: There were 2784 observations read from the data set PROJECT.CA_POPULATION.
+NOTE: The data set WORK.CA_INC_POP has 2784 observations and 6 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.11 seconds
+      cpu time            0.00 seconds
+
+
+27   data work.ca_inc_pop;
+28   merge project.ca_income project.ca_population;
+29   by county year;
+30   per_capita_personal_income = 1000*(personal_income/population);
+31   output;
+32   run;
+
+ERROR: You cannot open WORK.CA_INC_POP.DATA for output access with member-level control because WORK.CA_INC_POP.DATA is in use by
+you in resource environment ViewTable Window.
+NOTE: The SAS System stopped processing this step because of errors.
+NOTE: There were 1 observations read from the data set PROJECT.CA_INCOME.
+NOTE: There were 1 observations read from the data set PROJECT.CA_POPULATION.
+NOTE: DATA statement used (Total process time):
+      real time           0.09 seconds
+      cpu time            0.01 seconds
+
+
+33   data work.ca_inc_pop;
+34   merge project.ca_income project.ca_population;
+35   by county year;
+36   per_capita_personal_income = 1000*(personal_income/population);
+37   output;
+38   run;
+
+NOTE: There were 2784 observations read from the data set PROJECT.CA_INCOME.
+NOTE: There were 2784 observations read from the data set PROJECT.CA_POPULATION.
+NOTE: The data set WORK.CA_INC_POP has 2784 observations and 7 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.03 seconds
+
+
+39   data work.fl_inc_pop;
+40   merge project.fl_income project.fl_population;
+41   by county year;
+42   per_capita_personal_income = 1000*(personal_income/population);
+43   output;
+44   run;
+
+NOTE: There were 3216 observations read from the data set PROJECT.FL_INCOME.
+NOTE: There were 3216 observations read from the data set PROJECT.FL_POPULATION.
+NOTE: The data set WORK.FL_INC_POP has 3216 observations and 7 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.01 seconds
+
+
+45   data work.ny_inc_pop;
+46   merge project.ny_income project.ny_population;
+47   by county year;
+48   per_capita_personal_income = 1000*(personal_income/population);
+49   output;
+50   run;
+
+NOTE: There were 2976 observations read from the data set PROJECT.NY_INCOME.
+NOTE: There were 2976 observations read from the data set PROJECT.NY_POPULATION.
+NOTE: The data set WORK.NY_INC_POP has 2976 observations and 7 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.01 seconds
+
+
+51   data work.pa_inc_pop;
+52   merge project.pa_income project.pa_population;
+53   by county year;
+54   per_capita_personal_income = 1000*(personal_income/population);
+55   output;
+56   run;
+
+NOTE: There were 3216 observations read from the data set PROJECT.PA_INCOME.
+NOTE: There were 3216 observations read from the data set PROJECT.PA_POPULATION.
+NOTE: The data set WORK.PA_INC_POP has 3216 observations and 7 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.04 seconds
+
+
+57   data work.tx_inc_pop;
+58   merge project.tx_income project.tx_population;
+59   by county year;
+60   per_capita_personal_income = 1000*(personal_income/population);
+61   output;
+62   run;
+
+NOTE: There were 12192 observations read from the data set PROJECT.TX_INCOME.
+NOTE: There were 12192 observations read from the data set PROJECT.TX_POPULATION.
+NOTE: The data set WORK.TX_INC_POP has 12192 observations and 7 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.07 seconds
+      cpu time            0.04 seconds
+
+
+63   data work.ca_sub;
+64   set project.ca_inc_pop;
+ERROR: File PROJECT.CA_INC_POP.DATA does not exist.
+65   where year=2016;
+66   run;
+
+NOTE: The SAS System stopped processing this step because of errors.
+WARNING: The data set WORK.CA_SUB may be incomplete.  When this step was stopped there were 0 observations and 0 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.07 seconds
+      cpu time            0.01 seconds
+
+
+67   data work.ca_sub;
+68   set work.ca_inc_pop;
+69   where year=2016;
+70   run;
+
+NOTE: There were 58 observations read from the data set WORK.CA_INC_POP.
+      WHERE year=2016;
+NOTE: The data set WORK.CA_SUB has 58 observations and 7 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.07 seconds
+      cpu time            0.01 seconds
+
+
+71   data work.fl_sub;
+72   set work.fl_inc_pop;
+73   where year=2016;
+74   run;
+
+NOTE: There were 67 observations read from the data set WORK.FL_INC_POP.
+      WHERE year=2016;
+NOTE: The data set WORK.FL_SUB has 67 observations and 7 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+
+
+75   data work.ny_sub;
+76   set work.ny_inc_pop;
+77   where year=2016;
+78   run;
+
+NOTE: There were 62 observations read from the data set WORK.NY_INC_POP.
+      WHERE year=2016;
+NOTE: The data set WORK.NY_SUB has 62 observations and 7 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.03 seconds
+
+
+79   data work.pa_sub;
+80   set work.pa_inc_pop;
+81   where year=2016;
+82   run;
+
+NOTE: There were 67 observations read from the data set WORK.PA_INC_POP.
+      WHERE year=2016;
+NOTE: The data set WORK.PA_SUB has 67 observations and 7 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.00 seconds
+
+
+83   data work.tx_sub;
+84   set work.tx_inc_pop;
+85   where year=2016;
+86   run;
+
+NOTE: There were 254 observations read from the data set WORK.TX_INC_POP.
+      WHERE year=2016;
+NOTE: The data set WORK.TX_SUB has 254 observations and 7 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.06 seconds
+      cpu time            0.03 seconds
+
+
+87   data work.ca_real_capita;
+88   merge work.ca_sub project.us_cpi;
+89   by year;
+90   real_per_capita_personal_income = 100*(per_capita_personal_income/CPI);
+91   output;
+92   run;
+
+NOTE: Missing values were generated as a result of performing an operation on missing values.
+      Each place is given by: (Number of times) at (Line):(Column).
+      47 at 90:66
+NOTE: There were 58 observations read from the data set WORK.CA_SUB.
+NOTE: There were 48 observations read from the data set PROJECT.US_CPI.
+NOTE: The data set WORK.CA_REAL_CAPITA has 105 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.07 seconds
+      cpu time            0.01 seconds
+
+
+93   data work.ca_real_capita;
+94   merge work.ca_sub project.us_cpi;
+95   where year=2016;
+96   by year;
+97   real_per_capita_personal_income = 100*(per_capita_personal_income/CPI);
+98   output;
+99   run;
+
+NOTE: There were 58 observations read from the data set WORK.CA_SUB.
+      WHERE year=2016;
+NOTE: There were 1 observations read from the data set PROJECT.US_CPI.
+      WHERE year=2016;
+NOTE: The data set WORK.CA_REAL_CAPITA has 58 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.00 seconds
+
+
+100  data work.fl_real_capita;
+101  merge work.fl_sub project.us_cpi;
+102  where year=2016;
+103  by year;
+104  real_per_capita_personal_income = 100*(per_capita_personal_income/CPI);
+105  output;
+106  run;
+
+NOTE: There were 67 observations read from the data set WORK.FL_SUB.
+      WHERE year=2016;
+NOTE: There were 1 observations read from the data set PROJECT.US_CPI.
+      WHERE year=2016;
+NOTE: The data set WORK.FL_REAL_CAPITA has 67 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.01 seconds
+
+
+107  data work.ny_real_capita;
+108  merge work.ny_sub project.us_cpi;
+109  where year=2016;
+110  by year;
+111  real_per_capita_personal_income = 100*(per_capita_personal_income/CPI);
+112  output;
+113  run;
+
+NOTE: There were 62 observations read from the data set WORK.NY_SUB.
+      WHERE year=2016;
+NOTE: There were 1 observations read from the data set PROJECT.US_CPI.
+      WHERE year=2016;
+NOTE: The data set WORK.NY_REAL_CAPITA has 62 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+
+
+114  data work.pa_real_capita;
+115  merge work.pa_sub project.us_cpi;
+116  where year=2016;
+117  by year;
+118  real_per_capita_personal_income = 100*(per_capita_personal_income/CPI);
+119  output;
+120  run;
+
+NOTE: There were 67 observations read from the data set WORK.PA_SUB.
+      WHERE year=2016;
+NOTE: There were 1 observations read from the data set PROJECT.US_CPI.
+      WHERE year=2016;
+NOTE: The data set WORK.PA_REAL_CAPITA has 67 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.01 seconds
+
+
+121  data work.tx_real_capita;
+122  merge work.tx_sub project.us_cpi;
+123  where year=2016;
+124  by year;
+125  real_per_capita_personal_income = 100*(per_capita_personal_income/CPI);
+126  output;
+127  run;
+
+NOTE: There were 254 observations read from the data set WORK.TX_SUB.
+      WHERE year=2016;
+NOTE: There were 1 observations read from the data set PROJECT.US_CPI.
+      WHERE year=2016;
+NOTE: The data set WORK.TX_REAL_CAPITA has 254 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.01 seconds
+
+
+128  proc sort data = work.ca_real_capita;
+129  out = work.ca_real_sub;
+     ---
+     180
+ERROR 180-322: Statement is not valid or it is used out of proper order.
+130  by descending real_per_capita_personal_income;
+131  run;
+
+NOTE: The SAS System stopped processing this step because of errors.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.07 seconds
+      cpu time            0.01 seconds
+
+
+132  proc sort data = work.ca_real_capita;
+133            out = work.ca_real_sub;
+               ---
+               180
+ERROR 180-322: Statement is not valid or it is used out of proper order.
+134  by descending real_per_capita_personal_income;
+135  run;
+
+NOTE: The SAS System stopped processing this step because of errors.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+
+
+136  proc sort data = work.ca_real_capita
+137            out = work.ca_real_sub;
+138  by descending real_per_capita_personal_income;
+139  run;
+
+NOTE: There were 58 observations read from the data set WORK.CA_REAL_CAPITA.
+NOTE: The data set WORK.CA_REAL_SUB has 58 observations and 9 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.07 seconds
+      cpu time            0.01 seconds
+
+
+140  data = work.ca_real_sub;
+     ----
+     180
+
+ERROR 180-322: Statement is not valid or it is used out of proper order.
+
+141            set work.ca_real_sub (obs=5) ;
+               ---
+               180
+
+ERROR 180-322: Statement is not valid or it is used out of proper order.
+
+142  run;
+
+143  data = work.ca_real_sub;
+     ----
+     180
+
+ERROR 180-322: Statement is not valid or it is used out of proper order.
+
+144            set work.ca_real_sub2 (obs=5) ;
+               ---
+               180
+
+ERROR 180-322: Statement is not valid or it is used out of proper order.
+
+145  run;
+
+146  data work.ca_real_sub;
+147            set work.ca_real_sub (obs=5) ;
+148  run;
+
+NOTE: There were 5 observations read from the data set WORK.CA_REAL_SUB.
+NOTE: The data set WORK.CA_REAL_SUB has 5 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.05 seconds
+      cpu time            0.00 seconds
+
+
+149  proc sort data = work.ca_real_capita
+150              out = work.ca_real_sub;
+151  by descending real_per_capita_personal_income;
+152   run;
+
+NOTE: There were 58 observations read from the data set WORK.CA_REAL_CAPITA.
+NOTE: The data set WORK.CA_REAL_SUB has 58 observations and 9 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.01 seconds
+
+
+153  proc sort data = work.ca_real_capita
+154              out = work.ca_real_sub;
+155  by descending real_per_capita_personal_income;
+156   run;
+
+NOTE: There were 58 observations read from the data set WORK.CA_REAL_CAPITA.
+NOTE: The data set WORK.CA_REAL_SUB has 58 observations and 9 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.03 seconds
+
+
+157
+158  data work.ca_real_sub2;
+159            set work.ca_real_sub (obs=5) ;
+160  run;
+
+NOTE: There were 5 observations read from the data set WORK.CA_REAL_SUB.
+NOTE: The data set WORK.CA_REAL_SUB2 has 5 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+
+
+161  proc sort data = work.fl_real_capita
+162              out = work.fl_real_sub;
+163  by descending real_per_capita_personal_income;
+164   run;
+
+NOTE: There were 67 observations read from the data set WORK.FL_REAL_CAPITA.
+NOTE: The data set WORK.FL_REAL_SUB has 67 observations and 9 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.00 seconds
+
+
+165
+166  data work.fl_real_sub2;
+167            set work.fl_real_sub (obs=5) ;
+168  run;
+
+NOTE: There were 5 observations read from the data set WORK.FL_REAL_SUB.
+NOTE: The data set WORK.FL_REAL_SUB2 has 5 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+
+
+169  proc sort data = work.ny_real_capita
+170              out = work.ny_real_sub;
+171  by descending real_per_capita_personal_income;
+172   run;
+
+NOTE: There were 62 observations read from the data set WORK.NY_REAL_CAPITA.
+NOTE: The data set WORK.NY_REAL_SUB has 62 observations and 9 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.00 seconds
+
+
+173
+174  data work.ny_real_sub2;
+175            set work.ny_real_sub (obs=5) ;
+176  run;
+
+NOTE: There were 5 observations read from the data set WORK.NY_REAL_SUB.
+NOTE: The data set WORK.NY_REAL_SUB2 has 5 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+
+
+177  proc sort data = work.pa_real_capita
+178              out = work.pa_real_sub;
+179  by descending real_per_capita_personal_income;
+180   run;
+
+NOTE: There were 67 observations read from the data set WORK.PA_REAL_CAPITA.
+NOTE: The data set WORK.PA_REAL_SUB has 67 observations and 9 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.01 seconds
+
+
+181
+182  data work.pa_real_sub2;
+183            set work.pa_real_sub (obs=5) ;
+184  run;
+
+NOTE: There were 5 observations read from the data set WORK.PA_REAL_SUB.
+NOTE: The data set WORK.PA_REAL_SUB2 has 5 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+
+
+185  proc sort data = work.tx_real_capita
+186              out = work.tx_real_sub;
+187  by descending real_per_capita_personal_income;
+188   run;
+
+NOTE: There were 254 observations read from the data set WORK.TX_REAL_CAPITA.
+NOTE: The data set WORK.TX_REAL_SUB has 254 observations and 9 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.01 seconds
+
+
+189
+190  data work.tx_real_sub2;
+191            set work.tx_real_sub (obs=5) ;
+192  run;
+
+NOTE: There were 5 observations read from the data set WORK.TX_REAL_SUB.
+NOTE: The data set WORK.TX_REAL_SUB2 has 5 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+
+
+193  data perm.tyagi_627006433;
+194  merge work.ca_real_sub2 work.fl_real_sub2 work.ny_real_sub2 work.pa_real_sub2 work.tx_real_sub2;
+195  run;
+
+NOTE: There were 5 observations read from the data set WORK.CA_REAL_SUB2.
+NOTE: There were 5 observations read from the data set WORK.FL_REAL_SUB2.
+NOTE: There were 5 observations read from the data set WORK.NY_REAL_SUB2.
+NOTE: There were 5 observations read from the data set WORK.PA_REAL_SUB2.
+NOTE: There were 5 observations read from the data set WORK.TX_REAL_SUB2.
+NOTE: The data set PERM.TYAGI_627006433 has 5 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.00 seconds
+
+
+196  data perm.tyagi_627006433;
+197  merge work.ca_real_sub2 work.fl_real_sub2 work.ny_real_sub2 work.pa_real_sub2 work.tx_real_sub2;
+198  output;
+199  run;
+
+NOTE: There were 5 observations read from the data set WORK.CA_REAL_SUB2.
+NOTE: There were 5 observations read from the data set WORK.FL_REAL_SUB2.
+NOTE: There were 5 observations read from the data set WORK.NY_REAL_SUB2.
+NOTE: There were 5 observations read from the data set WORK.PA_REAL_SUB2.
+NOTE: There were 5 observations read from the data set WORK.TX_REAL_SUB2.
+NOTE: The data set PERM.TYAGI_627006433 has 5 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+
+
+200  data perm.tyagi_627006433;
+201  set work.ca_real_sub2 work.fl_real_sub2 work.ny_real_sub2 work.pa_real_sub2 work.tx_real_sub2;
+202  output;
+203  run;
+
+NOTE: There were 5 observations read from the data set WORK.CA_REAL_SUB2.
+NOTE: There were 5 observations read from the data set WORK.FL_REAL_SUB2.
+NOTE: There were 5 observations read from the data set WORK.NY_REAL_SUB2.
+NOTE: There were 5 observations read from the data set WORK.PA_REAL_SUB2.
+NOTE: There were 5 observations read from the data set WORK.TX_REAL_SUB2.
+NOTE: The data set PERM.TYAGI_627006433 has 25 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+
+

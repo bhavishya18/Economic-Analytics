@@ -1,0 +1,198 @@
+NOTE: Copyright (c) 2016 by SAS Institute Inc., Cary, NC, USA.
+NOTE: SAS (r) Proprietary Software 9.4 (TS1M5)
+      Licensed to TEXAS A&M UNIVERSITY - SFA T&R, Site 70080787.
+NOTE: This session is executing on the X64_10PRO  platform.
+
+
+
+NOTE: Updated analytical products:
+
+      SAS/STAT 14.3
+      SAS/ETS 14.3
+      SAS/OR 14.3
+      SAS/IML 14.3
+      SAS/QC 14.3
+
+NOTE: Additional host information:
+
+ X64_10PRO WIN 10.0.18362  Workstation
+
+NOTE: SAS initialization used:
+      real time           5.65 seconds
+      cpu time            2.24 seconds
+
+1    data work.growth_pinc (drop = pop_gr pcinc_gr)
+2        work.growth_pop(drop = pinc_gr pcinc_gr)
+3        work.growth_pcinc(drop = pinc_gr pop_gr);
+4    length GeoFIPS $ 5 GeoName $ 50 Table $3 IndustryClassification $ 3 Description $ 75;
+5    infile 'C:\Users\HP\Desktop\MS MIS SEM - 3\ECMT 673\County Growth Data.csv' dsd firstobs=2 obs=9595;
+6    input GeoFIPS $ GeoName $ Region Table $ Linecode IndustryClassification $ Description $ @;
+7    state = substr(GeoFIPS,1,2);
+8    county = substr(GeoFIPS,3,3);
+9    if Linecode=1 then do;
+10       do year = 1970 to 2016;
+11       input pinc_gr :7. @;
+12       output work.growth_pinc;
+13       end;
+14       end;
+15   if Linecode=2 then do;
+16       do year = 1970 to 2016;
+17       input pop_gr :7. @;
+18       output work.growth_pop;
+19       end;
+20       end;
+21   if Linecode=3 then do;
+22       do year = 1970 to 2016;
+23       input pcinc_gr :7. @;
+24       output work.growth_pcinc;
+25       end;
+26       end;
+27   run;
+
+NOTE: The infile 'C:\Users\HP\Desktop\MS MIS SEM - 3\ECMT 673\County Growth Data.csv' is:
+      Filename=C:\Users\HP\Desktop\MS MIS SEM - 3\ECMT 673\County Growth Data.csv,
+      RECFM=V,LRECL=32767,File Size (bytes)=4010389,
+      Last Modified=01 October 2019 18:39:50,
+      Create Time=26 September 2019 10:01:29
+
+NOTE: 9594 records were read from the infile 'C:\Users\HP\Desktop\MS MIS SEM - 3\ECMT 673\County Growth Data.csv'.
+      The minimum record length was 217.
+      The maximum record length was 466.
+NOTE: The data set WORK.GROWTH_PINC has 150306 observations and 11 variables.
+NOTE: The data set WORK.GROWTH_POP has 150306 observations and 11 variables.
+NOTE: The data set WORK.GROWTH_PCINC has 150306 observations and 11 variables.
+NOTE: DATA statement used (Total process time):
+      real time           2.74 seconds
+      cpu time            0.32 seconds
+
+
+28
+29   data work.subset_pinc;
+30       set work.growth_pinc;
+31       if state in('06', '12', '36', '42', '48') & county ~='000';
+32   run;
+
+NOTE: There were 150306 observations read from the data set WORK.GROWTH_PINC.
+NOTE: The data set WORK.SUBSET_PINC has 23876 observations and 11 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.24 seconds
+      cpu time            0.06 seconds
+
+
+33
+34   data work.subset_pop;
+35       set work.growth_pop;
+36       if state in('06', '12', '36', '42', '48') & county ~='000';
+37   run;
+
+NOTE: There were 150306 observations read from the data set WORK.GROWTH_POP.
+NOTE: The data set WORK.SUBSET_POP has 23876 observations and 11 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.28 seconds
+      cpu time            0.04 seconds
+
+
+38
+39   data work.subset_pcinc;
+40       set work.growth_pcinc;
+41       if state in('06', '12', '36', '42', '48') & county ~='000';
+42   run;
+
+NOTE: There were 150306 observations read from the data set WORK.GROWTH_PCINC.
+NOTE: The data set WORK.SUBSET_PCINC has 23876 observations and 11 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.48 seconds
+      cpu time            0.12 seconds
+
+
+43
+44   data work.merge_growth;
+45       merge work.subset_pinc work.subset_pop work.subset_pcinc;
+46       by state county year;
+47   run;
+
+NOTE: There were 23876 observations read from the data set WORK.SUBSET_PINC.
+NOTE: There were 23876 observations read from the data set WORK.SUBSET_POP.
+NOTE: There were 23876 observations read from the data set WORK.SUBSET_PCINC.
+NOTE: The data set WORK.MERGE_GROWTH has 23876 observations and 13 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.08 seconds
+      cpu time            0.04 seconds
+
+
+48
+49   data work.acc_growth;
+50       set work.merge_growth;
+51       by state county;
+52   retain acc_pinc acc_pop acc_pcinc;
+53   if First.county=1 then do;
+54       acc_pinc = pinc_gr + 1;
+55       acc_pop = pop_gr + 1;
+56       acc_pcinc = pcinc_gr + 1;
+57   end;
+58   else do;
+59       acc_pinc = acc_pinc * (pinc_gr + 1);
+60       acc_pop = acc_pop * (pop_gr + 1);
+61       acc_pcinc = acc_pcinc * (pcinc_gr + 1);
+62   end;
+63   if Last.county = 1;
+64       acc_pinc = ((acc_pinc)**(1/47)) - 1;
+65       acc_pop = ((acc_pop)**(1/47)) - 1;
+66       acc_pcinc = ((acc_pcinc)**(1/47)) - 1;
+67   keep state county GeoName acc_pinc acc_pop acc_pcinc;
+68   run;
+
+NOTE: There were 23876 observations read from the data set WORK.MERGE_GROWTH.
+NOTE: The data set WORK.ACC_GROWTH has 508 observations and 6 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.05 seconds
+      cpu time            0.04 seconds
+
+
+69
+70
+71   proc sort data = work.acc_growth out = work.sort;
+72   by state descending acc_pcinc;
+73   run;
+
+NOTE: There were 508 observations read from the data set WORK.ACC_GROWTH.
+NOTE: The data set WORK.SORT has 508 observations and 6 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.08 seconds
+      cpu time            0.00 seconds
+
+
+74
+75   data work.sort2;
+76   set work.sort;
+77   by state;
+78   if First.state = 1 then count=1;
+79   else count+1;
+80   if count <6;
+81   drop year count;
+82   run;
+
+WARNING: The variable year in the DROP, KEEP, or RENAME list has never been referenced.
+NOTE: There were 508 observations read from the data set WORK.SORT.
+NOTE: The data set WORK.SORT2 has 25 observations and 6 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.06 seconds
+      cpu time            0.01 seconds
+
+
+83
+84
+85   ods pdf file="C:\Users\HP\Desktop\MS MIS SEM - 3\ECMT 673\example.pdf";
+NOTE: Writing ODS PDF output to DISK destination "C:\Users\HP\Desktop\MS MIS SEM - 3\ECMT 673\example.pdf", printer "PDF".
+86   proc print data = work.sort2;
+NOTE: Writing HTML Body file: sashtml.htm
+87   run;
+
+NOTE: There were 25 observations read from the data set WORK.SORT2.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           1.33 seconds
+      cpu time            0.54 seconds
+
+
+88   ods pdf close;
+NOTE: ODS PDF printed 1 page to C:\Users\HP\Desktop\MS MIS SEM - 3\ECMT 673\example.pdf.
